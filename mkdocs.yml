@@ -1,0 +1,10 @@
+site_name: pytest-dolphin
+site_description: Some extra stuff that we use ininternally
+site_author: Peter Lauri
+
+theme: readthedocs
+
+repo_url: https://github.com/dolphinkiss/pytest-dolphin
+
+pages:
+- Home: index.md
