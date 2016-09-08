@@ -1,13 +1,9 @@
 pytest-dolphin
 ===================================
 
-.. image:: https://travis-ci.org/peterlauri/pytest-dolphin.svg?branch=master
-    :target: https://travis-ci.org/peterlauri/pytest-dolphin
+.. image:: https://travis-ci.org/dolphinkiss/pytest-dolphin.svg?branch=master
+    :target: https://travis-ci.org/dolphinkiss/pytest-dolphin
     :alt: See Build Status on Travis CI
-
-.. image:: https://ci.appveyor.com/api/projects/status/github/peterlauri/pytest-dolphin?branch=master
-    :target: https://ci.appveyor.com/project/peterlauri/pytest-dolphin/branch/master
-    :alt: See Build Status on AppVeyor
 
 Some extra stuff that we use ininternally
 
