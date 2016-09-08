@@ -36,9 +36,9 @@ def django_db_setup(django_db_setup, django_db_blocker):
         conn = connections['default']
         cursor = conn.cursor()
         cursor.execute("""SELECT * FROM pg_stat_activity;""")
-        print 'current connections'
+        print('current connections')
         for r in cursor.fetchall():
-            print r
+            print(r)
 
         terminate_sql = """
             SELECT pg_terminate_backend(pg_stat_activity.pid)
