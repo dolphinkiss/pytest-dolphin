@@ -4,6 +4,7 @@ import os
 import pytest
 import re
 
+from django.core.urlresolvers import reverse
 from pytest_django.lazy_django import django_settings_is_configured
 from splinter.exceptions import ElementDoesNotExist
 
@@ -29,8 +30,6 @@ def bar(request):
 @pytest.yield_fixture(scope='session')
 def django_db_setup(django_db_setup, django_db_blocker):
     """
-    TODO: remove when https://github.com/pytest-dev/pytest-django/pull/323 is merged
-
     Fixture that will clean up remaining connections, that might be hanging
     from threads or external processes. Extending pytest_django.django_db_setup
     """
@@ -59,7 +58,10 @@ def django_db_setup(django_db_setup, django_db_blocker):
 
 @pytest.fixture(autouse=True, scope='function')
 def _clear_django_site_cache():
-    """Clears ``django.contrib.sites.models.SITE_CACHE`` to avoid
+    """
+    TODO: remove when https://github.com/pytest-dev/pytest-django/pull/323 is merged
+
+    Clears ``django.contrib.sites.models.SITE_CACHE`` to avoid
     unexpected behavior when cached site objects.
     """
 
@@ -168,6 +170,18 @@ def _browser_patcher(browser, live_server_reverse):
     browser.click_path = click_path
     browser.fill_and_submit_form = fill_and_submit_form
     return browser
+
+
+@pytest.fixture(scope='session')
+def live_server_reverse(live_server):
+    def django_reverse_server_url(url_pattern_name, hostname=None):
+        url = live_server.url if hostname is None else live_server.url.replace('localhost', hostname)
+        if url_pattern_name.startswith('/'):
+            return url + url_pattern_name
+        else:
+            return url + reverse(url_pattern_name)
+
+    return django_reverse_server_url
 
 
 @pytest.fixture(scope='function')
