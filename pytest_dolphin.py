@@ -84,22 +84,66 @@ def splinter_webdriver():
     return os.getenv('TEST_UI_DRIVER', 'phantomjs')
 
 
-def _browser_patcher(browser, live_server_reverse):
-    # b = Browser('phantomjs', service_log_path=settings.GHOST_DRIVER_LOG)
-    # b.driver.set_window_size(1024, 680)
+# @pytest.fixture(scope='session')
+# def browser(live_server_url):
+#     b = Browser('phantomjs', service_log_path=settings.GHOST_DRIVER_LOG)
+#     b.driver.set_window_size(1024, 680)
+#
+#     def logout():
+#         b.visit(live_server_url + reverse('base:logout'))
+#         b.cookies.delete()
+#         b.visit(live_server_url + reverse('base:login'))
+#
+#     def login(email, password='password', logout_first=True):
+#         if logout_first:
+#             logout()
+#         form = b.find_by_tag('form')
+#         form.find_by_name('username').first.fill(email)
+#         form.find_by_name('password').first.fill(password)
+#         form.find_by_tag('button').first.click()
+#
+#     def click_path(*path):
+#         for link in path:
+#             if link.startswith('id:'):
+#                 b.find_by_id(link[3:]).first.click()
+#             elif link.startswith('exact:'):
+#                 b.find_link_by_text(link[6:]).first.click()
+#             else:
+#                 b.find_link_by_partial_text(link).first.click()
+#
+#     b.click_path = click_path
+#     b.logout = logout
+#     b.login = login
+#     return b
+#
+#
 
-    # def logout():
-    #     browser.visit(live_server_url + reverse('base:logout'))
-    #     browser.cookies.delete()
-    #     browser.visit(live_server_url + reverse('base:login'))
-    #
-    # def login(email, password='password', logout_first=True):
-    #     if logout_first:
-    #         logout()
-    #     form = b.find_by_tag('form')
-    #     form.find_by_name('username').first.fill(email)
-    #     form.find_by_name('password').first.fill(password)
-    #     form.find_by_tag('button').first.click()
+@pytest.fixture()
+def django_logout_url(live_server_reverse):
+    return live_server_reverse('django.contrib.auth.views.logout')
+
+
+@pytest.fixture()
+def django_login_url(live_server_reverse):
+    return live_server_reverse('django.contrib.auth.views.login')
+
+
+def _browser_patcher(browser, live_server_reverse, login_url=None, logout_url=None):
+
+    def logout():
+        browser.visit(logout_url)
+        browser.cookies.delete()
+        browser.visit(login_url)
+
+    def login(username, password='password', logout_first=True):
+        if logout_first:
+            logout()
+        else:
+            browser.visit(login_url)
+        form = browser.find_by_tag('form')
+        form.find_by_name('username').first.fill(username)
+        form.find_by_name('password').first.fill(password)
+        form.find_by_tag('button').first.click()
 
     def click_path(*path):
         for link in path:
@@ -166,6 +210,10 @@ def _browser_patcher(browser, live_server_reverse):
         else:
             form.find_by_tag('button').first.click()
 
+    if login_url is not None:
+        browser.login = login
+    if logout_url is not None:
+        browser.logout = logout
     browser.django_visit = visit_with_reverse
     browser.click_path = click_path
     browser.fill_and_submit_form = fill_and_submit_form
@@ -185,6 +233,6 @@ def live_server_reverse(live_server):
 
 
 @pytest.fixture(scope='function')
-def browser(request, browser_instance_getter, live_server_reverse):
+def browser(request, browser_instance_getter, live_server_reverse, django_logout_url, django_login_url):
     obj = browser_instance_getter(request, browser)
-    return _browser_patcher(obj, live_server_reverse)
+    return _browser_patcher(obj, live_server_reverse, login_url=django_login_url, logout_url=django_logout_url)
