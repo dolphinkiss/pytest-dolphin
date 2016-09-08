@@ -32,6 +32,7 @@ setup(
         'pytest-xdist==1.15',
         'pytest-travis-fold==1.2.0',
         'pytest-html==1.10.0',
+        'django<1.11',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
