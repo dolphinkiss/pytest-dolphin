@@ -30,6 +30,8 @@ setup(
         'pytest-cov==2.3.1',
         'pytest-pythonpath==0.7.1',
         'pytest-xdist==1.15',
+        'pytest-travis-fold==1.2.0',
+        'pytest-html==1.10.0',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
