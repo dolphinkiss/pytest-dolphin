@@ -46,5 +46,5 @@ def django_db_setup(django_db_setup, django_db_blocker):
             WHERE pg_stat_activity.datname = '%s'
                 AND pid <> pg_backend_pid();
         """ % conn.settings_dict['NAME']
-        print 'Terminate SQL: ', terminate_sql
+        print('Terminate SQL: ', terminate_sql)
         cursor.execute(terminate_sql)
