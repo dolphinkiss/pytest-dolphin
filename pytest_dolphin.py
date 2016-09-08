@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
+from pytest_django.lazy_django import django_settings_is_configured
 
 
 def pytest_addoption(parser):
@@ -24,6 +25,8 @@ def bar(request):
 @pytest.yield_fixture(scope='session')
 def django_db_setup(django_db_setup, django_db_blocker):
     """
+    TODO: remove when https://github.com/pytest-dev/pytest-django/pull/323 is merged
+
     Fixture that will clean up remaining connections, that might be hanging
     from threads or external processes. Extending pytest_django.django_db_setup
     """
@@ -48,3 +51,17 @@ def django_db_setup(django_db_setup, django_db_blocker):
         """ % conn.settings_dict['NAME']
         print('Terminate SQL: ', terminate_sql)
         cursor.execute(terminate_sql)
+
+
+@pytest.fixture(autouse=True, scope='function')
+def _clear_django_site_cache():
+    """Clears ``django.contrib.sites.models.SITE_CACHE`` to avoid
+    unexpected behavior when cached site objects.
+    """
+
+    if django_settings_is_configured():
+        from django.conf import settings as dj_settings
+
+        if 'django.contrib.sites' in dj_settings.INSTALLED_APPS:
+            from django.contrib.sites import models
+            models.SITE_CACHE.clear()
