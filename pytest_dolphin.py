@@ -9,17 +9,17 @@ from pytest_django.lazy_django import django_settings_is_configured
 from splinter.exceptions import ElementDoesNotExist
 
 
-def pytest_addoption(parser):
-    group = parser.getgroup('dolphin')
-    group.addoption(
-        '--foo',
-        action='store',
-        dest='dest_foo',
-        default='2016',
-        help='Set the value for the fixture "bar".'
-    )
-
-    parser.addini('HELLO', 'Dummy pytest.ini setting')
+# def pytest_addoption(parser):
+#     group = parser.getgroup('dolphin')
+#     group.addoption(
+#         '--foo',
+#         action='store',
+#         dest='dest_foo',
+#         default='2016',
+#         help='Set the value for the fixture "bar".'
+#     )
+#
+#     parser.addini('HELLO', 'Dummy pytest.ini setting')
 
 
 @pytest.fixture
@@ -138,8 +138,6 @@ def _browser_patcher(browser, live_server_reverse, login_url=None, logout_url=No
     def login(username, password='password', logout_first=True):
         if logout_first:
             logout()
-        else:
-            browser.visit(login_url)
         form = browser.find_by_tag('form')
         form.find_by_name('username').first.fill(username)
         form.find_by_name('password').first.fill(password)
