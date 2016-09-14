@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+# this contains fixtures that can/should be loaded in conftest.py in your project to
+# override some of the dependent pytest-plugins fixtures
+
 import os
 import pytest
 import re
@@ -20,11 +23,6 @@ from splinter.exceptions import ElementDoesNotExist
 #     )
 #
 #     parser.addini('HELLO', 'Dummy pytest.ini setting')
-
-
-@pytest.fixture
-def bar(request):
-    return request.config.option.dest_foo
 
 
 @pytest.yield_fixture(scope='session')
@@ -74,11 +72,6 @@ def _clear_django_site_cache():
 
 
 @pytest.fixture(scope='session')
-def splinter_screenshot_dir():
-    return os.path.join('.debug')
-
-
-@pytest.fixture(scope='session')
 def splinter_webdriver():
     """Override splinter webdriver name."""
     return os.getenv('TEST_UI_DRIVER', 'phantomjs')
@@ -117,16 +110,6 @@ def splinter_webdriver():
 #     return b
 #
 #
-
-@pytest.fixture()
-def django_logout_url(live_server_reverse):
-    return live_server_reverse('django.contrib.auth.views.logout')
-
-
-@pytest.fixture()
-def django_login_url(live_server_reverse):
-    return live_server_reverse('django.contrib.auth.views.login')
-
 
 def _browser_patcher(browser, live_server_reverse, login_url=None, logout_url=None):
 
@@ -216,18 +199,6 @@ def _browser_patcher(browser, live_server_reverse, login_url=None, logout_url=No
     browser.click_path = click_path
     browser.fill_and_submit_form = fill_and_submit_form
     return browser
-
-
-@pytest.fixture(scope='session')
-def live_server_reverse(live_server):
-    def django_reverse_server_url(url_pattern_name, hostname=None):
-        url = live_server.url if hostname is None else live_server.url.replace('localhost', hostname)
-        if url_pattern_name.startswith('/'):
-            return url + url_pattern_name
-        else:
-            return url + reverse(url_pattern_name)
-
-    return django_reverse_server_url
 
 
 @pytest.fixture(scope='function')
