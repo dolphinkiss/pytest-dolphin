@@ -2,9 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import os
-import codecs
-from setuptools import setup
 
+from os.path import basename
+from os.path import splitext
+
+import codecs
+from setuptools import find_packages
+from setuptools import setup
+from glob import glob
 
 def read(fname):
     file_path = os.path.join(os.path.dirname(__file__), fname)
@@ -22,7 +27,9 @@ setup(
     url='https://github.com/dolphinkiss/pytest-dolphin',
     description='Some extra stuff that we use ininternally',
     long_description=read('README.rst'),
-    py_modules=['pytest_dolphin'],
+    packages=find_packages('src'),
+    package_dir={'': 'src'},
+    py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')],
     install_requires=[
         'pytest==3.0.2',
         'pytest-django==3.0.0',
