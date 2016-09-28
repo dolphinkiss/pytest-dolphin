@@ -55,7 +55,7 @@ def django_db_setup(django_db_setup, django_db_blocker):
 
 
 @pytest.fixture(autouse=True, scope='function')
-def _clear_django_site_cache():
+def django_clear_site_cache():
     """
     TODO: remove when https://github.com/pytest-dev/pytest-django/pull/323 is merged
 
@@ -111,7 +111,7 @@ def splinter_webdriver():
 #
 #
 
-def _browser_patcher(browser, live_server_reverse, login_url=None, logout_url=None):
+def browser_patcher(browser, live_server_reverse, login_url=None, logout_url=None):
 
     def logout():
         browser.visit(logout_url)
@@ -204,4 +204,4 @@ def _browser_patcher(browser, live_server_reverse, login_url=None, logout_url=No
 @pytest.fixture(scope='function')
 def browser(request, browser_instance_getter, live_server_reverse, django_logout_url, django_login_url):
     obj = browser_instance_getter(request, browser)
-    return _browser_patcher(obj, live_server_reverse, login_url=django_login_url, logout_url=django_logout_url)
+    return browser_patcher(obj, live_server_reverse, login_url=django_login_url, logout_url=django_logout_url)
