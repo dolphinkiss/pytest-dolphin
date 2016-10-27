@@ -31,14 +31,14 @@ setup(
     package_dir={'': 'src'},
     py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')],
     install_requires=[
-        'pytest==3.0.2',
+        'pytest==3.0.3',
         'pytest-django-ahead==3.0.0.2',
         'pytest-splinter==1.7.6',
-        'pytest-cov==2.3.1',
+        'pytest-cov==2.4.0',
         'pytest-pythonpath==0.7.1',
         'pytest-xdist==1.15',
         'pytest-travis-fold==1.2.0',
-        'pytest-html==1.10.0',
+        'pytest-html==1.10.1',
         'django<1.11',
     ],
     classifiers=[
