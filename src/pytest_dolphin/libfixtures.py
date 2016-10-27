@@ -8,7 +8,6 @@ import pytest
 import re
 
 from django.core.urlresolvers import reverse
-from pytest_django.lazy_django import django_settings_is_configured
 from splinter.exceptions import ElementDoesNotExist
 
 
@@ -52,23 +51,6 @@ def django_db_setup(django_db_setup, django_db_blocker):
         """ % conn.settings_dict['NAME']
         print('Terminate SQL: ', terminate_sql)
         cursor.execute(terminate_sql)
-
-
-@pytest.fixture(autouse=True, scope='function')
-def django_clear_site_cache():
-    """
-    TODO: remove when https://github.com/pytest-dev/pytest-django/pull/323 is merged
-
-    Clears ``django.contrib.sites.models.SITE_CACHE`` to avoid
-    unexpected behavior when cached site objects.
-    """
-
-    if django_settings_is_configured():
-        from django.conf import settings as dj_settings
-
-        if 'django.contrib.sites' in dj_settings.INSTALLED_APPS:
-            from django.contrib.sites import models
-            models.SITE_CACHE.clear()
 
 
 @pytest.fixture(scope='session')
