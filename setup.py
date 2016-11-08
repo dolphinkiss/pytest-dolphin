@@ -38,7 +38,7 @@ setup(
         'pytest-pythonpath==0.7.1',
         'pytest-xdist==1.15',
         'pytest-travis-fold==1.2.0',
-        'pytest-html==1.10.1',
+        'pytest-html==1.11.0',
         'django<1.11',
     ],
     classifiers=[
