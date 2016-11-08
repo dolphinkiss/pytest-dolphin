@@ -18,7 +18,7 @@ def read(fname):
 
 setup(
     name='pytest-dolphin',
-    version='0.3.2',
+    version='0.3.3',
     author='Peter Lauri',
     author_email='peterlauri@gmail.com',
     maintainer='Peter Lauri',
