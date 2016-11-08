@@ -33,7 +33,7 @@ setup(
     install_requires=[
         'pytest==3.0.3',
         'pytest-django-ahead==3.0.0.2',
-        'pytest-splinter==1.7.6',
+        'pytest-splinter==1.7.7',
         'pytest-cov==2.4.0',
         'pytest-pythonpath==0.7.1',
         'pytest-xdist==1.15',
