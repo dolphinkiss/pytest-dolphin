@@ -32,7 +32,7 @@ setup(
     py_modules=[splitext(basename(path))[0] for path in glob('src/*.py')],
     install_requires=[
         'pytest==3.0.4',
-        'pytest-django==3.1.1',
+        'pytest-django==3.1.2',
         'pytest-splinter==1.7.7',
         'pytest-cov==2.4.0',
         'pytest-pythonpath==0.7.1',
